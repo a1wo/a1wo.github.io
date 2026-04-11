@@ -3,22 +3,407 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My GitHub Page</title>
+  <title>Alon Wolf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: system-ui, Arial; margin: 0; padding: 48px; line-height: 1.4; }
-    .card { max-width: 720px; margin: 0 auto; padding: 28px; border: 1px solid #ddd; border-radius: 16px; }
-    h1 { margin-top: 0; }
-    a { text-decoration: none; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #111827;
+      --text-secondary: #6b7280;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --tag-bg: #eff6ff;
+      --tag-text: #1d4ed8;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Header / Profile ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 0 48px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 3px solid var(--border);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .profile-info h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .profile-info .title {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .profile-info .affiliation {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 5px 12px;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .social-links a:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Main content ── */
+    main {
+      padding: 48px 0 80px;
+    }
+
+    /* ── Section headings ── */
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* ── Bio ── */
+    .bio {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-bottom: 40px;
+      font-size: 0.97rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .bio strong { color: var(--text); }
+
+    /* ── Publications ── */
+    .publications { margin-bottom: 40px; }
+
+    .pub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 24px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .pub-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      border-color: #c7d2fe;
+    }
+
+    .pub-thumb {
+      width: 200px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: flex-start;
+    }
+
+    .pub-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .pub-thumb .thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+    }
+
+    .pub-thumb .thumb-placeholder svg {
+      opacity: 0.4;
+    }
+
+    .pub-body { flex: 1; min-width: 0; }
+
+    .pub-venue {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      background: var(--accent);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .pub-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .pub-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .pub-title a:hover { color: var(--accent); }
+
+    .pub-authors {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .pub-authors .me { font-weight: 600; color: var(--text); }
+
+    .pub-affiliations {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .pub-description {
+      font-size: 0.87rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .pub-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pub-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 4px 11px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .pub-link:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .pub-link.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .pub-link.primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .profile { flex-direction: column; gap: 20px; text-align: center; }
+      .social-links { justify-content: center; }
+      .pub-card { flex-direction: column; }
+      .pub-thumb { width: 100%; }
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Hello 👋</h1>
-    <p>This site is hosted on GitHub Pages.</p>
-    <p>
-      Edit <code>index.html</code> in your repo and refresh this page.
-    </p>
-    <p><a href="https://github.com/">View my GitHub</a></p>
-  </div>
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div class="container">
+      <div class="profile">
+        <div class="avatar">
+          <img src="profile.png" alt="Alon Wolf" />
+        </div>
+        <div class="profile-info">
+          <h1>Alon Wolf</h1>
+          <p class="title">Researcher · AI &amp; Security</p>
+          <p class="affiliation">Tel Aviv University</p>
+          <div class="social-links">
+            <a href="https://github.com/a1wo" target="_blank">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              GitHub
+            </a>
+            <a href="https://scholar.google.com/citations?user=VLHXMrgAAAAJ" target="_blank">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l4 2.18V17c0 1.1 3.13 3 7 3s7-1.9 7-3v-5.82L20 9.09V15h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 16.17c0 .38-1.97 1.83-5 1.83s-5-1.45-5-1.83v-4.09l5 2.73 5-2.73v4.09z"/></svg>
+              Google Scholar
+            </a>
+            <a href="https://www.linkedin.com/in/alon-wolf/" target="_blank">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://x.com/AlonWolfy" target="_blank">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.946l4.262 5.633L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+              X / Twitter
+            </a>
+            <a href="mailto:alonwolfy@gmail.com">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+              Email
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main>
+    <div class="container">
+
+      <!-- Bio -->
+      <div class="bio">
+        I am a researcher at <strong>Tel Aviv University</strong> with a passion for
+        <strong>AI</strong> and <strong>security vulnerabilities</strong> — and especially the intersection of both.
+        My work spans generative models, diffusion-based editing, and understanding how AI systems can be probed,
+        controlled, and secured.
+      </div>
+
+      <!-- Publications -->
+      <section class="publications">
+        <h2 class="section-title">Publications</h2>
+
+        <!-- ── Paper: AdaOr ── -->
+        <div class="pub-card">
+          <div class="pub-thumb">
+            <img
+              src="https://adaor-paper.github.io/assets/method/scheme_c_new.jpg"
+              alt="AdaOr – edit progression comparison"
+              onerror="this.parentElement.innerHTML='<div class=\'thumb-placeholder\'><svg width=\'40\' height=\'40\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%236b7280\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg></div>'"
+            />
+          </div>
+          <div class="pub-body">
+            <span class="pub-venue">SIGGRAPH 2026</span>
+            <h3 class="pub-title">
+              <a href="https://adaor-paper.github.io/" target="_blank">
+                Continuous Control of Editing Models via Adaptive-Origin Guidance
+              </a>
+            </h3>
+            <p class="pub-authors">
+              <span class="me">Alon Wolf</span><sup>1,2</sup>,
+              Chen Katzir<sup>2</sup>,
+              Kfir Aberman<sup>2</sup>,
+              Or Patashnik<sup>1</sup>
+            </p>
+            <p class="pub-affiliations">
+              <sup>1</sup>Tel Aviv University &nbsp; <sup>2</sup>Decart.ai
+            </p>
+            <!-- affiliations reflect the paper's original author list -->
+            <p class="pub-description">
+              We introduce <strong>AdaOr</strong> (Adaptive-Origin Guidance), enabling smooth and continuous control
+              over edit intensity in diffusion-based image and video editing models — without per-edit optimization
+              or specialized datasets. By introducing a learnable identity instruction and interpolating the CFG
+              origin, AdaOr allows seamless linear interpolation between the input and any target edit.
+            </p>
+            <div class="pub-links">
+              <a class="pub-link primary" href="https://adaor-paper.github.io/" target="_blank">
+                🌐 Project Page
+              </a>
+              <a class="pub-link" href="https://arxiv.org/abs/2602.03826" target="_blank">
+                📄 arXiv
+              </a>
+              <a class="pub-link" href="https://research.decart.ai/adaptive-origin-guidance/" target="_blank">
+                ✍️ Blog Post
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ ADD MORE PUBLICATIONS HERE ══
+        <div class="pub-card">
+          <div class="pub-thumb"> ... </div>
+          <div class="pub-body"> ... </div>
+        </div>
+        -->
+
+      </section>
+
+    </div>
+  </main>
+
 </body>
 </html>
